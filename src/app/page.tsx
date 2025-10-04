@@ -123,15 +123,15 @@ export default function Home() {
                 <ul className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
-                    <span><strong>Default:</strong> If you don't specify a number, we'll search for 10 people</span>
+                    <span><strong>Default:</strong> If you don&apos;t specify a number, we&apos;ll search for 10 people</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
-                    <span><strong>Best practice:</strong> Include a city for better results (e.g., "2 Software Engineers in Miami")</span>
+                    <span><strong>Best practice:</strong> Include a city for better results (e.g., &quot;2 Software Engineers in Miami&quot;)</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
-                    <span><strong>Add expertise:</strong> Mention specific skills or technologies (e.g., "Java developers in Austin")</span>
+                    <span><strong>Add expertise:</strong> Mention specific skills or technologies (e.g., &quot;Java developers in Austin&quot;)</span>
                   </li>
                 </ul>
               </div>
