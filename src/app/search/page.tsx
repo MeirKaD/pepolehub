@@ -5,6 +5,7 @@ import { useEffect, useState, Suspense } from 'react';
 import { SearchBar } from '@/components/SearchBar';
 import { PersonCard } from '@/components/PersonCard';
 import { LoadingState } from '@/components/LoadingState';
+import { Loader2, Clock } from 'lucide-react';
 import type { ProfileData } from '@/types/linkedin';
 
 function SearchContent() {
@@ -60,7 +61,24 @@ function SearchContent() {
           <SearchBar onSearch={handleSearch} isLoading={isLoading} />
         </div>
 
-        {isLoading && <LoadingState />}
+        {isLoading && (
+          <>
+            {/* Loading Info Card */}
+            <div className="mb-6 relative overflow-hidden rounded-xl border border-white/10 bg-gradient-to-r from-background/80 via-background/60 to-background/80 backdrop-blur-xl p-6">
+              <div className="flex items-center gap-4">
+                <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+                <div className="flex-1">
+                  <h3 className="text-sm font-medium text-foreground mb-1">Searching for profiles...</h3>
+                  <p className="text-sm text-muted-foreground flex items-center gap-2">
+                    <Clock className="h-4 w-4" />
+                    According to the number of people searched, this operation might take a few minutes
+                  </p>
+                </div>
+              </div>
+            </div>
+            <LoadingState />
+          </>
+        )}
 
         {error && (
           <div className="rounded-lg border border-destructive bg-destructive/10 p-4 text-destructive">

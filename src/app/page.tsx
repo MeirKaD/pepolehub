@@ -114,6 +114,29 @@ export default function Home() {
           <div className="mt-10 flex justify-center">
             <SearchBar onSearch={handleSearch} />
           </div>
+
+          {/* Tips Section */}
+          <div className="mt-8 mx-auto max-w-2xl">
+            <div className="relative overflow-hidden rounded-xl border border-white/10 bg-gradient-to-r from-background/80 via-background/60 to-background/80 backdrop-blur-xl p-6">
+              <div className="relative z-10">
+                <h3 className="text-sm font-medium text-foreground mb-3">💡 Search Tips</h3>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-500 mt-0.5">•</span>
+                    <span><strong>Default:</strong> If you don't specify a number, we'll search for 10 people</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-500 mt-0.5">•</span>
+                    <span><strong>Best practice:</strong> Include a city for better results (e.g., "2 Software Engineers in Miami")</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-500 mt-0.5">•</span>
+                    <span><strong>Add expertise:</strong> Mention specific skills or technologies (e.g., "Java developers in Austin")</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </div>
