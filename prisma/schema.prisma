@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Person {
+  id                String   @id @default(cuid())
+  linkedinUrl       String   @unique
+  linkedinId        String   @unique // LinkedIn username (e.g., "katcook1")
+  linkedinNumId     String?  // Numeric LinkedIn ID
+
+  // Basic Info
+  firstName         String
+  lastName          String
+  fullName          String   @db.Text
+  headline          String?  @db.Text // Position/title (called "position" in API)
+  about             String?  @db.Text
+
+  // Location
+  location          String?  // General location
+  city              String?
+  countryCode       String?  // ISO country code (e.g., "US")
+
+  // Profile Media
+  profilePicUrl     String?
+  bannerImage       String?
+  defaultAvatar     Boolean  @default(false)
+
+  // Current Company
+  currentCompany    String?  // Company name
+  currentCompanyId  String?  // Company LinkedIn ID
+
+  // Rich Data (JSON fields)
+  experience        Json?    // Array of Experience objects
+  education         Json?    // Array of Education objects
+  languages         Json?    // Array of Language objects
+
+  // Social Stats
+  connections       Int?
+  followers         Int?
+
+  // Metadata
+  searchCount       Int      @default(0) // How many times searched
+  lastViewed        DateTime @default(now())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Flags
+  memorializedAccount Boolean @default(false)
+
+  @@index([fullName])
+  @@index([firstName, lastName])
+  @@index([lastViewed])
+  @@index([linkedinId])
+  @@index([currentCompany])
+  @@index([location])
+  @@index([updatedAt])
+  @@map("people")
+}
+
+model Search {
+  id          String   @id @default(cuid())
+  query       String   @db.Text
+  results     Json     // Array of person IDs
+  resultCount Int
+  createdAt   DateTime @default(now())
+
+  @@index([query])
+  @@map("searches")
+}
