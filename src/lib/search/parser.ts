@@ -9,7 +9,7 @@ export interface ParsedSearchQuery {
   count: number;
   role: string;
   location?: string;
-  countryCode?: string;
+  countryCode?: string | null;
   keywords: string[];
   googleQuery: string;
 }
@@ -20,9 +20,9 @@ export interface ParsedSearchQuery {
 const SearchQuerySchema = z.object({
   count: z.number().min(1).max(50).describe('Number of profiles to find (1-50)'),
   role: z.string().describe('Job title or role (e.g., "Software Engineer", "Product Manager")'),
-  location: z.string().optional().describe('Location or region (e.g., "San Francisco", "Remote", "Israel")'),
-  countryCode: z.string().length(2).optional().describe('2-letter ISO country code (e.g., "US", "IL", "GB", "DE"). Extract from location if mentioned.'),
-  keywords: z.array(z.string()).describe('Additional keywords or qualifications (e.g., ["Python", "startup", "AI"])'),
+  location: z.string().optional().describe('Location or region (e.g., "San Francisco", "Remote", "Israel"). Can also be a company name if no geographic location is specified.'),
+  countryCode: z.string().length(2).optional().nullable().describe('2-letter ISO country code (e.g., "US", "IL", "GB", "DE"). Extract from location ONLY if it is a geographic location. Return null if location is a company name.'),
+  keywords: z.array(z.string()).describe('Additional keywords or qualifications (e.g., ["Python", "startup", "AI", "MiniMax"])'),
   googleQuery: z.string().describe('Optimized Google search query for LinkedIn profiles using site:linkedin.com/in'),
 });
 
@@ -63,24 +63,40 @@ Input query: "${query}"
 
 Instructions:
 1. Extract the number of profiles needed (default to 10 if not specified)
-2. Identify the job role/title
-3. Extract location if mentioned (e.g., "Israel", "United States", "London")
-4. Convert location to 2-letter ISO country code (e.g., Israel → IL, United States → US, UK → GB, Germany → DE, France → FR, Spain → ES, Italy → IT, Canada → CA, Australia → AU, India → IN, Japan → JP)
-5. Identify any additional keywords or skills
+2. Identify the job role/title (be flexible - if the query mentions a company like "MiniMax", "Google", etc., treat it as part of the search context)
+3. Extract location if mentioned - this can be:
+   - A geographic location (city, country, region): "Israel", "San Francisco", "London"
+   - A company name: "Google", "MiniMax", "Microsoft"
+   - If it's a company, set location to the company name and countryCode to null
+4. Convert location to 2-letter ISO country code ONLY if it's a geographic location:
+   - Geographic: Israel → IL, United States → US, UK → GB, Germany → DE, France → FR, Spain → ES, Italy → IT, Canada → CA, Australia → AU, India → IN, Japan → JP
+   - Company: "MiniMax" → countryCode = null, "Google" → countryCode = null
+5. Identify any additional keywords or skills (technologies, companies, expertise)
 6. Create a Google search query using this format:
-   site:linkedin.com/in "Job Title" "Location" keywords
+   site:linkedin.com/in "Job Title" "Location/Company" keywords
 
-RULE OF THUMB:
-** NEVER ANSWER QUESTIONS THAT ARE NOT RELATED TO YOUR GOAL **
+IMPORTANT FLEXIBILITY RULES:
+- Be VERY flexible with query interpretation
+- If a query mentions a company (e.g., "works in MiniMax", "at Google"), treat the company as location/context
+- Don't fail on unusual queries - adapt and extract what you can
+- The goal is to find relevant LinkedIn profiles, so prioritize creating a working search over strict schema adherence
 
 Examples:
 - Input: "5 AI Engineers in Israel with Python experience"
-- Output countryCode: "IL"
-- Output googleQuery: site:linkedin.com/in "AI Engineer" "Israel" Python
+  Output: role="AI Engineer", location="Israel", countryCode="IL", keywords=["Python"]
+  googleQuery: site:linkedin.com/in "AI Engineer" "Israel" Python
 
 - Input: "10 Product Managers in San Francisco"
-- Output countryCode: "US"
-- Output googleQuery: site:linkedin.com/in "Product Manager" "San Francisco"
+  Output: role="Product Manager", location="San Francisco", countryCode="US", keywords=[]
+  googleQuery: site:linkedin.com/in "Product Manager" "San Francisco"
+
+- Input: "Software engineers that works in minimax"
+  Output: role="Software Engineer", location="MiniMax", countryCode=null, keywords=["MiniMax"]
+  googleQuery: site:linkedin.com/in "Software Engineer" MiniMax
+
+- Input: "Java developers at Google"
+  Output: role="Java Developer", location="Google", countryCode=null, keywords=["Java", "Google"]
+  googleQuery: site:linkedin.com/in "Java Developer" Google
 
 Keep the googleQuery simple and effective for finding relevant LinkedIn profiles.`,
     });
@@ -98,7 +114,7 @@ Keep the googleQuery simple and effective for finding relevant LinkedIn profiles
   } catch (error) {
     console.error('[Parser] Error parsing search query:', error);
     throw new Error(
-      `Failed to parse search query: ${
+      `Failed to parse search query: ${ 
         error instanceof Error ? error.message : 'Unknown error'
       }`
     );

@@ -39,7 +39,7 @@ function getApiHeaders() {
 /**
  * Build Google search URL with JSON response format and geolocation
  */
-function buildGoogleSearchUrl(query: string, page: number = 0, countryCode?: string): string {
+function buildGoogleSearchUrl(query: string, page: number = 0, countryCode?: string | null): string {
   const encodedQuery = encodeURIComponent(query);
   const start = page * 10;
   let url = `https://www.google.com/search?q=${encodedQuery}&start=${start}&brd_json=1`;
@@ -62,7 +62,7 @@ function buildGoogleSearchUrl(query: string, page: number = 0, countryCode?: str
 export async function searchGoogle(
   query: string,
   page: number = 0,
-  countryCode?: string
+  countryCode?: string | null
 ): Promise<GoogleSearchResponse> {
   const unlockerZone = process.env.BRIGHTDATA_UNLOCKER_ZONE || 'unblocker';
   const searchUrl = buildGoogleSearchUrl(query, page, countryCode);
@@ -174,7 +174,7 @@ function normalizeLinkedInUrl(url: string): string {
 export async function findLinkedInProfiles(
   query: string,
   maxResults: number = 10,
-  countryCode?: string
+  countryCode?: string | null
 ): Promise<string[]> {
   try {
     const searchResults = await searchGoogle(query, 0, countryCode);
