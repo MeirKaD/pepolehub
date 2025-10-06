@@ -99,10 +99,10 @@ export default function Home() {
           <div className="floating">
             <h1 className="relative text-2xl font-light tracking-tight sm:text-6xl md:text-7xl lg:text-8xl letter-spacing-tight text-shadow-deep">
               <span className="animated-gradient inline-block">
-                Find LinkedIn Professionals
+                <i>Find</i> LinkedIn Professionals
               </span>
               <span className="shimmer-overlay">
-                Find LinkedIn Professionals
+                <i>Find</i> LinkedIn Professionals
               </span>
             </h1>
           </div>
