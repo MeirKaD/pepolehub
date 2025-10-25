@@ -1,3 +1,5 @@
+import type { ParsedSearchQuery } from '@/lib/search/parser';
+
 // Types matching Bright Data LinkedIn API response
 
 export interface CurrentCompany {
@@ -115,6 +117,48 @@ export interface ProfileData {
   connections?: number;
   followers?: number;
   memorializedAccount?: boolean;
+}
+
+/**
+ * Lightweight profile summary for search results (Phase 1)
+ */
+export interface ProfileSummary {
+  linkedinUrl: string;
+  linkedinId: string;
+  title: string;
+  snippet: string;
+  name?: string;
+  headline?: string;
+  location?: string;
+}
+
+/**
+ * Normalized Google search result item
+ */
+export interface GoogleSearchResult {
+  title: string;
+  link: string;
+  description: string;
+  position: number;
+}
+
+/**
+ * Cached search results payload
+ */
+export interface CachedSearchResults {
+  query: string;
+  parsedQuery: ParsedSearchQuery;
+  results: ProfileSummary[];
+  count: number;
+  timestamp: number;
+}
+
+/**
+ * Full profile data with cache metadata
+ */
+export interface CachedProfile extends ProfileData {
+  cachedAt: number;
+  source: 'redis' | 'postgres' | 'api';
 }
 
 // Helper function to transform Bright Data response to our ProfileData format

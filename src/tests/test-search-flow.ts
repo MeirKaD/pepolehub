@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { parseSearchQuery } from '@/lib/search/parser';
-import { findLinkedInProfiles } from '@/lib/brightdata/search';
+import { searchLinkedInProfiles } from '@/lib/brightdata/search';
 
 async function testSearchFlow() {
   console.log('=== Testing Search Flow ===\n');
@@ -19,16 +19,26 @@ async function testSearchFlow() {
     console.log(`  - Keywords: ${parsed.keywords.join(', ')}`);
     console.log(`  - Google Query: ${parsed.googleQuery}\n`);
 
-    // Step 2: Search Google and extract LinkedIn URLs
-    console.log('[2/2] Searching Google for LinkedIn profiles...');
-    const linkedInUrls = await findLinkedInProfiles(
+    // Step 2: Search Google and extract LinkedIn profile summaries
+    console.log('[2/2] Searching Google for LinkedIn profile summaries...');
+    const summaries = await searchLinkedInProfiles(
       parsed.googleQuery,
-      parsed.count
+      parsed.count,
+      parsed.countryCode
     );
-    console.log(`✓ Found ${linkedInUrls.length} LinkedIn URLs:\n`);
+    console.log(`✓ Found ${summaries.length} profile summaries:\n`);
 
-    linkedInUrls.forEach((url, index) => {
-      console.log(`  ${index + 1}. ${url}`);
+    summaries.forEach((summary, index) => {
+      console.log(`  ${index + 1}. ${summary.linkedinUrl}`);
+      if (summary.name) {
+        console.log(`     Name: ${summary.name}`);
+      }
+      if (summary.headline) {
+        console.log(`     Headline: ${summary.headline}`);
+      }
+      if (summary.location) {
+        console.log(`     Location: ${summary.location}`);
+      }
     });
 
     console.log('\n✅ Test completed successfully!');
