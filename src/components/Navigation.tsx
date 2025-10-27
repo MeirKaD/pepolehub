@@ -23,14 +23,13 @@ export function Navigation() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 pointer-events-none">
-      {/* Glassmorphism background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/60 to-background/80 backdrop-blur-xl pointer-events-none" />
+    <nav className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 pointer-events-none">
+      <div className="pointer-events-auto mx-auto max-w-7xl">
+        <div className="relative flex h-20 items-center justify-between rounded-2xl border border-white/20 bg-white/10 px-4 sm:px-6 lg:px-8 shadow-[0_12px_35px_-20px_rgba(15,23,42,0.75)] backdrop-blur-2xl backdrop-saturate-150">
+          <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-r from-white/25 via-white/10 to-white/25 opacity-80" />
 
-      <div className="relative w-full px-4 sm:px-6 lg:px-8 pointer-events-auto">
-        <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <div className="flex items-center gap-6 -ml-2">
+          <div className="relative flex items-center gap-6 -ml-2">
             <Link
               href="/"
               className="pointer-events-auto hover:opacity-80 transition-opacity flex items-center"
@@ -38,9 +37,9 @@ export function Navigation() {
               <Image
                 src="/logo.png"
                 alt="PeopleHub"
-                width={280}
+                width={210}
                 height={60}
-                className="h-30 w-auto object-contain"
+                className="h-15 w-auto object-contain"
                 priority
               />
             </Link>
@@ -64,7 +63,7 @@ export function Navigation() {
           </div>
 
           {/* Navigation Items */}
-          <div className="flex items-center gap-1 pointer-events-auto">
+          <div className="relative flex items-center gap-1 pointer-events-auto">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               const Icon = item.icon;
@@ -75,7 +74,7 @@ export function Navigation() {
                   href={item.href}
                   className={cn(
                     'relative flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 pointer-events-auto',
-                    'hover:bg-white/10',
+                    'hover:bg-white/20',
                     isActive
                       ? 'text-foreground'
                       : 'text-muted-foreground hover:text-foreground'
@@ -83,7 +82,7 @@ export function Navigation() {
                 >
                   {/* Active indicator - glass pill */}
                   {isActive && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg border border-blue-500/30 backdrop-blur-sm" />
+                    <div className="absolute inset-0 rounded-lg border border-white/40 bg-white/20 backdrop-blur-xl" />
                   )}
 
                   <Icon className="h-4 w-4 relative z-10" />
