@@ -198,9 +198,9 @@ export function createExecuteSearchNode(
       maxResults: MAX_SEARCH_RESULTS,
     };
 
-    if (state.searchQuery?.trim()) {
-      options.query = state.searchQuery.trim();
-    } else if (state.linkedinData?.headline) {
+    // Query generation happens inside searchGoogleForPerson via LLM
+    // Use LinkedIn headline as context if available
+    if (state.linkedinData?.headline) {
       options.context = state.linkedinData.headline;
     }
 
@@ -386,9 +386,8 @@ export function createResearchGraphBuilder(overrides: GraphOverrides = {}) {
   graph
     .addEdge(START, ResearchNodeNames.START)
     .addEdge(ResearchNodeNames.START, ResearchNodeNames.FETCH_LINKEDIN)
-    .addEdge(ResearchNodeNames.START, ResearchNodeNames.GENERATE_SEARCH_QUERY)
+    .addEdge(ResearchNodeNames.START, ResearchNodeNames.EXECUTE_SEARCH)
     .addEdge(ResearchNodeNames.FETCH_LINKEDIN, ResearchNodeNames.AGGREGATE_DATA)
-    .addEdge(ResearchNodeNames.GENERATE_SEARCH_QUERY, ResearchNodeNames.EXECUTE_SEARCH)
     .addConditionalEdges(ResearchNodeNames.EXECUTE_SEARCH, routeToScraping)
     .addConditionalEdges(ResearchNodeNames.SCRAPE_WEB_PAGE, routeToSummarization)
     .addEdge(ResearchNodeNames.SUMMARIZE_CONTENT, ResearchNodeNames.AGGREGATE_DATA)

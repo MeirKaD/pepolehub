@@ -4,7 +4,7 @@ import { z } from 'zod';
 import type { ProfileData } from '@/types/linkedin';
 import type { ResearchDataBundle, SearchResult, WebSummary } from './types';
 
-const MODEL_NAME = 'gemini-2.0-flash-exp';
+const MODEL_NAME = 'gemini-2.0-flash';
 const DEFAULT_MAX_SUMMARY_WORDS = 500;
 const DEFAULT_CHUNK_SIZE = 6000;
 
@@ -202,11 +202,14 @@ LinkedIn: ${linkedinUrl}
 Focus: ${context ?? 'General professional research'}
 
 Guidelines:
-- Use quotes around the name.
-- Highlight role/company keywords and relevant topics (cloud, AI, leadership, strategy, finance, etc.).
-- Avoid LinkedIn or social profile aggregators (-site:linkedin.com, -site:facebook.com, -site:twitter.com).
-- Keep the query under 300 characters.
-- Prefer queries that return interviews, keynote recaps, strategy articles, executive profiles.
+- Use quotes around the person's full name.
+- Keep the query simple and clean - typically just the quoted name.
+- Do NOT add generic keywords like "cloud", "AI", "leadership", "strategy" unless they explicitly appear in the Focus/context provided above.
+- Only include role or company keywords if they are mentioned in the Focus.
+- Exclude LinkedIn (-site:linkedin.com).
+- Keep the query concise (under 200 characters).
+- The goal is to find any authoritative content mentioning this person.
+
 Return JSON with googleQuery and optional rationale.`;
 }
 

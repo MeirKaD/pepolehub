@@ -251,13 +251,15 @@ LinkedIn: ${linkedinUrl}
 Context / Focus: ${context ?? 'General professional background'}
 
 Goals:
-1. Surface authoritative sources (news outlets, company blogs, keynote recaps, podcast transcripts, reputable interviews).
-2. Focus on substantial content such as interviews, speeches, strategy articles, keynotes, or detailed profiles that mention the person's work and impact.
-3. Explicitly exclude LinkedIn or obvious social profile aggregators.
-4. Always wrap the full name in quotes and consider adding short aliases in parentheses, e.g., ("Satya Nadella" OR "Nadella").
-5. Combine contextual keywords intelligently (role, company, topics like "cloud", "AI", "strategy", "leadership").
-6. Use parentheses with OR groups. Only add site filters when they improve quality, and avoid restricting the query to a tiny list of domains.
-7. Keep the final query concise (< 300 characters) and well-structured so that it works as-is in Google.
+1. Create a simple, focused query that will find authoritative content about this person.
+2. Use ONLY the person's name in quotes - do NOT add generic keywords unless they appear in the provided context.
+3. Explicitly exclude LinkedIn (-site:linkedin.com).
+4. Keep the query minimal and clean - typically just the quoted name and exclusions.
+5. If context is provided with specific role/company, you MAY include those exact terms, but do NOT invent or assume topics like "cloud", "AI", "leadership", "strategy" etc.
+6. Keep the final query concise (< 200 characters) and simple.
+
+Example for "John Smith" with no context: "John Smith" -site:linkedin.com
+Example for "Jane Doe" with context "CEO at Acme Corp": "Jane Doe" "Acme" -site:linkedin.com
 
 Return ONLY the final Google query string (no explanation).`;
 }
@@ -282,8 +284,6 @@ function buildFallbackPersonQuery(personName: string, context?: string, linkedin
   }
 
   const modifiers = [
-    '("interview" OR "profile" OR "speech" OR "podcast" OR "strategy" OR "feature")',
-    '("cloud" OR "AI" OR "leadership" OR "innovation" OR "digital transformation" OR "Microsoft")',
     'after:2018',
   ];
 
