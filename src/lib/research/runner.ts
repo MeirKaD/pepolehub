@@ -44,10 +44,23 @@ export async function runResearchGraph(
     });
 
     console.log(`[Research Runner] Graph execution completed for ${researchId}`);
+    console.log(`[Research Runner] Result keys:`, Object.keys(result));
+    console.log(`[Research Runner] Status:`, result.status);
+    console.log(`[Research Runner] Errors:`, result.errors);
+    console.log(`[Research Runner] Has finalReport:`, !!result.finalReport);
+    console.log(`[Research Runner] Has linkedinData:`, !!result.linkedinData);
+    console.log(`[Research Runner] Web summaries count:`, result.webSummaries?.length ?? 0);
 
     // Check if we have a final report
     if (!result.finalReport) {
-      throw new Error('Graph execution completed but no report was generated');
+      const errorDetails = {
+        status: result.status,
+        errors: result.errors,
+        hasLinkedIn: !!result.linkedinData,
+        webSummariesCount: result.webSummaries?.length ?? 0,
+      };
+      console.error(`[Research Runner] No report generated. Details:`, errorDetails);
+      throw new Error(`Graph execution completed but no report was generated. Status: ${result.status}, Errors: ${JSON.stringify(result.errors)}`);
     }
 
     // Extract sources from web summaries

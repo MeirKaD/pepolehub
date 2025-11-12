@@ -10,11 +10,8 @@ import {
   CheckCircle2,
   XCircle,
   ArrowLeft,
-  FileText,
-  Search,
-  Globe,
-  Brain,
-  Clock
+  Clock,
+  Globe
 } from 'lucide-react';
 import { ResearchProgress } from '@/components/ResearchProgress';
 import { ResearchReport } from '@/components/ResearchReport';

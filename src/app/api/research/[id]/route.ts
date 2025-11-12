@@ -9,7 +9,7 @@ type RouteContext = {
  * GET /api/research/[id]
  * Get research status and report by ID
  */
-export async function GET(request: NextRequest, context: RouteContext) {
+export async function GET(_request: NextRequest, context: RouteContext) {
   try {
     const params = await context.params;
     const { id } = params;
@@ -33,7 +33,19 @@ export async function GET(request: NextRequest, context: RouteContext) {
     }
 
     // Return different data based on status
-    const response: any = {
+    const response: {
+      success: boolean;
+      id: string;
+      status: string;
+      personName: string;
+      linkedinUrl: string;
+      createdAt: Date;
+      updatedAt: Date;
+      report?: string;
+      sources?: unknown;
+      errorMessage?: string | null;
+      metadata?: unknown;
+    } = {
       success: true,
       id: research.id,
       status: research.status,

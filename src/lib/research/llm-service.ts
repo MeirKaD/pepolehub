@@ -1,8 +1,7 @@
 import { google } from '@ai-sdk/google';
 import { generateObject, generateText } from 'ai';
 import { z } from 'zod';
-import type { ProfileData } from '@/types/linkedin';
-import type { ResearchDataBundle, SearchResult, WebSummary } from './types';
+import type { ResearchDataBundle, WebSummary } from './types';
 
 const MODEL_NAME = 'gemini-2.0-flash';
 const DEFAULT_MAX_SUMMARY_WORDS = 500;
@@ -58,10 +57,7 @@ const SummarySchema = z.object({
   confidence: z.number().min(0).max(1).optional(),
 });
 
-const ReportSchema = z.object({
-  markdown: z.string(),
-  sources: z.array(z.string()).default([]),
-});
+// ReportSchema removed - not currently used
 
 export async function generateSearchQuery(
   personName: string,
@@ -118,7 +114,7 @@ export async function summarizeWebContent(
   const chunkSize = options.chunkSize ?? DEFAULT_CHUNK_SIZE;
   const chunks = chunkText(cleaned, chunkSize);
   const collected: z.infer<typeof SummarySchema>[] = [];
-  let usage = emptyUsage();
+  const usage = emptyUsage();
 
   for (const chunk of chunks) {
     const prompt = buildSummaryPrompt(personName, url, chunk, maxWords);
@@ -253,12 +249,7 @@ function mergeSummaries(summaries: z.infer<typeof SummarySchema>[], maxWords: nu
   };
 }
 
-function deriveKeyPoints(text: string): string[] {
-  const sentences = text.split(/(?<=\.)\s+/).slice(0, 3);
-  return sentences
-    .map((sentence) => sentence.replace(/\s+/g, ' ').trim())
-    .filter(Boolean);
-}
+// deriveKeyPoints removed - not currently used
 
 function sanitizeContent(content: string): string {
   return content

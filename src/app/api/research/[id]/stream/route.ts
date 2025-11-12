@@ -121,7 +121,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
 
           // Send metadata updates if available
           if (updated.metadata && typeof updated.metadata === 'object') {
-            const metadata = updated.metadata as Record<string, any>;
+            const metadata = updated.metadata as Record<string, unknown>;
             if (metadata.step) {
               controller.enqueue(
                 encoder.encode(

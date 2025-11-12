@@ -3,7 +3,7 @@
  * Run with: npx tsx src/tests/test-graph-structure.ts
  */
 
-import { createResearchGraphBuilder, ResearchNodeNames } from '@/lib/research/graph';
+import { createResearchGraphBuilder } from '@/lib/research/graph';
 
 async function testGraphStructure() {
   const { graph, nodes } = createResearchGraphBuilder();

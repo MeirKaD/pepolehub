@@ -31,25 +31,24 @@ interface StreamEvent {
   errorMessage?: string;
 }
 
-export function ResearchProgress({ researchId, initialData }: ResearchProgressProps) {
-  const [currentStep, setCurrentStep] = useState<string>('initializing');
+const PROGRESS_STEPS: ProgressStep[] = [
+  { id: 'initializing', label: 'Initializing research', icon: Loader2, status: 'active' },
+  { id: 'fetching-linkedin', label: 'Fetching LinkedIn profile', icon: Search, status: 'pending' },
+  { id: 'searching-web', label: 'Searching the web', icon: Globe, status: 'pending' },
+  { id: 'scraping', label: 'Scraping web pages', icon: FileText, status: 'pending' },
+  { id: 'analyzing', label: 'Analyzing content', icon: Brain, status: 'pending' },
+  { id: 'generating-report', label: 'Generating report', icon: FileText, status: 'pending' },
+];
+
+export function ResearchProgress({ researchId }: ResearchProgressProps) {
   const [statusMessage, setStatusMessage] = useState('Starting research...');
   const [progress, setProgress] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isFailed, setIsFailed] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const steps: ProgressStep[] = [
-    { id: 'initializing', label: 'Initializing research', icon: Loader2, status: 'active' },
-    { id: 'fetching-linkedin', label: 'Fetching LinkedIn profile', icon: Search, status: 'pending' },
-    { id: 'searching-web', label: 'Searching the web', icon: Globe, status: 'pending' },
-    { id: 'scraping', label: 'Scraping web pages', icon: FileText, status: 'pending' },
-    { id: 'analyzing', label: 'Analyzing content', icon: Brain, status: 'pending' },
-    { id: 'generating-report', label: 'Generating report', icon: FileText, status: 'pending' },
-  ];
-
-  const [stepStatuses, setStepStatuses] = useState<Record<string, 'pending' | 'active' | 'completed'>>(
-    steps.reduce((acc, step, idx) => ({
+  const [stepStatuses, setStepStatuses] = useState<Record<string, 'pending' | 'active' | 'completed'>>(() =>
+    PROGRESS_STEPS.reduce<Record<string, 'pending' | 'active' | 'completed'>>((acc, step, idx) => ({
       ...acc,
       [step.id]: idx === 0 ? 'active' : 'pending',
     }), {})
@@ -71,13 +70,12 @@ export function ResearchProgress({ researchId, initialData }: ResearchProgressPr
 
           case 'progress':
             if (data.step) {
-              setCurrentStep(data.step);
               // Update step statuses
               setStepStatuses((prev) => {
                 const newStatuses = { ...prev };
                 // Mark all previous steps as completed
                 let foundCurrent = false;
-                for (const step of steps) {
+                for (const step of PROGRESS_STEPS) {
                   if (step.id === data.step) {
                     newStatuses[step.id] = 'active';
                     foundCurrent = true;
@@ -181,7 +179,7 @@ export function ResearchProgress({ researchId, initialData }: ResearchProgressPr
 
           {/* Steps List */}
           <div className="space-y-3">
-            {steps.map((step) => {
+            {PROGRESS_STEPS.map((step) => {
               const status = stepStatuses[step.id] || 'pending';
               const Icon = step.icon;
 

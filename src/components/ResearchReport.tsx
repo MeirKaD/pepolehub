@@ -14,7 +14,7 @@ interface ResearchReportProps {
   personName: string;
 }
 
-export function ResearchReport({ report, sources, personName }: ResearchReportProps) {
+export function ResearchReport({ report, sources }: ResearchReportProps) {
   const [copied, setCopied] = useState(false);
   const [showSources, setShowSources] = useState(true);
 

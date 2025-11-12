@@ -5,12 +5,12 @@ async function testPrismaClient() {
 
   // Check available models
   const models = Object.keys(prisma).filter(
-    (k) => !k.startsWith('_') && !k.startsWith('$') && typeof (prisma as any)[k] === 'object'
+    (k) => !k.startsWith('_') && !k.startsWith('$') && typeof (prisma as unknown as Record<string, unknown>)[k] === 'object'
   );
 
   console.log('Available models:', models);
   console.log('Has research model?', 'research' in prisma);
-  console.log('prisma.research type:', typeof (prisma as any).research);
+  console.log('prisma.research type:', typeof (prisma as unknown as Record<string, unknown>).research);
 
   if ('research' in prisma) {
     console.log('✅ prisma.research exists');

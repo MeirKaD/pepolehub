@@ -5,7 +5,7 @@ import { searchGoogleForPerson, scrapeUrls, type PersonSearchOptions, type Scrap
 import { generateSearchQuery, summarizeWebContent, generateResearchReport } from './llm-service';
 import type { SearchQueryResult, SummarizeResult, ResearchReportResult } from './llm-service';
 import { ResearchStateAnnotation } from './types';
-import type { ResearchDataBundle, SearchResult, ScrapedContent, ResearchState, WebSummary } from './types';
+import type { ResearchDataBundle, SearchResult, ScrapedContent, WebSummary } from './types';
 
 export type ResearchGraphState = typeof ResearchStateAnnotation.State;
 export type ResearchGraphUpdate = typeof ResearchStateAnnotation.Update;
