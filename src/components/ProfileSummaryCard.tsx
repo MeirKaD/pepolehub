@@ -1,11 +1,12 @@
 'use client';
 
 import { useCallback, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import type { CachedProfile, ProfileSummary } from '@/types/linkedin';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
+import { ChevronDown, ChevronUp, ExternalLink, Brain, Loader2 } from 'lucide-react';
 import ProfileDetails from '@/components/ProfileDetails';
 
 interface ProfileSummaryCardProps {
@@ -13,9 +14,12 @@ interface ProfileSummaryCardProps {
 }
 
 export default function ProfileSummaryCard({ summary }: ProfileSummaryCardProps) {
+  const router = useRouter();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isResearching, setIsResearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [researchError, setResearchError] = useState<string | null>(null);
   const [fullProfile, setFullProfile] = useState<CachedProfile | null>(null);
 
   const handleExpand = useCallback(async () => {
@@ -41,6 +45,34 @@ export default function ProfileSummaryCard({ summary }: ProfileSummaryCardProps)
 
     setIsExpanded((prev) => !prev);
   }, [fullProfile, isExpanded, summary.linkedinId]);
+
+  const handleResearch = useCallback(async () => {
+    setIsResearching(true);
+    setResearchError(null);
+
+    try {
+      const response = await fetch('/api/research', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          linkedinUrl: summary.linkedinUrl,
+          personName: summary.name || summary.title,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to initiate research');
+      }
+
+      // Navigate to research page
+      router.push(`/research/${data.researchId}`);
+    } catch (err) {
+      setResearchError(err instanceof Error ? err.message : 'Failed to start research');
+      setIsResearching(false);
+    }
+  }, [summary.linkedinUrl, summary.name, summary.title, router]);
 
   const displayTitle = summary.name || summary.title;
 
@@ -70,7 +102,26 @@ export default function ProfileSummaryCard({ summary }: ProfileSummaryCardProps)
         )}
 
         <div className="flex flex-wrap items-center gap-2">
-          <Button size="sm" onClick={handleExpand} disabled={isLoading}>
+          <Button
+            size="sm"
+            onClick={handleResearch}
+            disabled={isResearching}
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+          >
+            {isResearching ? (
+              <>
+                <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+                Starting...
+              </>
+            ) : (
+              <>
+                <Brain className="mr-1 h-4 w-4" />
+                Research Person
+              </>
+            )}
+          </Button>
+
+          <Button size="sm" variant="outline" onClick={handleExpand} disabled={isLoading}>
             {isLoading ? (
               'Loading...'
             ) : isExpanded ? (
@@ -98,6 +149,10 @@ export default function ProfileSummaryCard({ summary }: ProfileSummaryCardProps)
             </a>
           </Button>
         </div>
+
+        {researchError && (
+          <p className="text-sm text-destructive mt-2">{researchError}</p>
+        )}
 
         {isExpanded && (
           <div className="border-t pt-4">

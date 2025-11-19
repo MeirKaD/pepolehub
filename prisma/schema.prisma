@@ -55,6 +55,9 @@ model Person {
   // Flags
   memorializedAccount Boolean @default(false)
 
+  // Relations
+  researches          Research[]
+
   @@index([fullName])
   @@index([firstName, lastName])
   @@index([lastViewed])
@@ -74,4 +77,25 @@ model Search {
 
   @@index([query])
   @@map("searches")
+}
+
+model Research {
+  id              String   @id @default(cuid())
+  personId        String?  // Foreign key to Person model
+  person          Person?  @relation(fields: [personId], references: [id])
+  linkedinUrl     String
+  personName      String
+  report          String   @db.Text // Markdown report
+  sources         Json     // Array of source URLs and summaries
+  metadata        Json?    // Graph execution metadata (status updates, timing, etc.)
+  status          String   // 'pending' | 'processing' | 'completed' | 'failed'
+  errorMessage    String?  @db.Text
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([personId])
+  @@index([linkedinUrl])
+  @@index([status])
+  @@index([createdAt])
+  @@map("researches")
 }

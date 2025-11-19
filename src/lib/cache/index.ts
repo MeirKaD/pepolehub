@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 import { ProfileData, Experience, Education, Language } from '@/types/linkedin';
 
-const CACHE_FRESHNESS_DAYS = 30;
+const CACHE_FRESHNESS_DAYS = 180;
 
 /**
  * Extract LinkedIn ID from URL
