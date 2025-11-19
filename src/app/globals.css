@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -184,9 +183,6 @@
   .animate-fifth {
     animation: moveInCircle 20s ease infinite;
   }
-<<<<<<< HEAD
-}
-=======
 }
 
 /* Prose/Markdown Styling Override */
@@ -295,4 +291,3 @@
   font-weight: 400;
   color: inherit;
 }
->>>>>>> 8a46105d5a6def4fb05018ca722efdd0368284a9
