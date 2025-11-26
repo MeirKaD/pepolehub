@@ -13,7 +13,7 @@ export default function Home() {
 
   return (
     <AuroraBackground>
-      <div className="pointer-events-none mx-auto max-w-4xl text-center px-4">
+      <div className="mx-auto max-w-4xl text-center px-4">
         <div className="floating">
           <h1 className="relative text-2xl font-light tracking-tight sm:text-6xl md:text-7xl lg:text-8xl letter-spacing-tight text-shadow-deep">
             <span className="animated-gradient inline-block">
@@ -26,11 +26,11 @@ export default function Home() {
           Search for professionals by role, location, and more. Powered by AI and real-time data.
         </p>
 
-        <div className="pointer-events-auto mt-10 flex justify-center">
+        <div className="mt-10 flex justify-center">
           <SearchBar onSearch={handleSearch} />
         </div>
 
-        <div className="pointer-events-auto mt-8 mx-auto max-w-2xl">
+        <div className="mt-8 mx-auto max-w-2xl">
           <div className="backdrop-blur-md backdrop-opacity-80 bg-white/5 border border-white/10 rounded-lg shadow-md p-6">
             <div className="relative z-10">
               <h3 className="text-sm font-medium text-foreground mb-3">💡 Search Tips</h3>
