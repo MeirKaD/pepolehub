@@ -1,6 +1,7 @@
 import redis from './client';
 
 export async function checkRedisHealth(): Promise<boolean> {
+  if (!redis) return false;
   try {
     const result = await redis.ping();
     return result === 'PONG';
@@ -11,6 +12,7 @@ export async function checkRedisHealth(): Promise<boolean> {
 }
 
 export async function getRedisInfo(): Promise<Record<string, string>> {
+  if (!redis) return {};
   try {
     const info = await redis.info();
     const lines = info.split('\r\n');

@@ -31,6 +31,7 @@ export function getCacheKey(prefix: string, identifier: string): string {
  * Get value from cache with JSON parsing
  */
 export async function getCache<T>(key: string): Promise<T | null> {
+  if (!redis) return null;
   try {
     const value = await redis.get(key);
     if (!value) return null;
@@ -46,6 +47,7 @@ export async function getCache<T>(key: string): Promise<T | null> {
  * Set value in cache with JSON stringification and TTL
  */
 export async function setCache<T>(key: string, value: T, ttl: number): Promise<boolean> {
+  if (!redis) return false;
   try {
     const serialized = JSON.stringify(value);
     await redis.setex(key, ttl, serialized);
@@ -60,6 +62,7 @@ export async function setCache<T>(key: string, value: T, ttl: number): Promise<b
  * Delete value from cache
  */
 export async function deleteCache(key: string): Promise<boolean> {
+  if (!redis) return false;
   try {
     await redis.del(key);
     return true;
@@ -73,6 +76,7 @@ export async function deleteCache(key: string): Promise<boolean> {
  * Delete multiple keys by pattern
  */
 export async function deleteCachePattern(pattern: string): Promise<number> {
+  if (!redis) return 0;
   try {
     const keys = await redis.keys(pattern);
     if (keys.length === 0) return 0;
@@ -89,6 +93,7 @@ export async function deleteCachePattern(pattern: string): Promise<number> {
  * Check if key exists in cache
  */
 export async function existsCache(key: string): Promise<boolean> {
+  if (!redis) return false;
   try {
     const exists = await redis.exists(key);
     return exists === 1;
@@ -102,6 +107,7 @@ export async function existsCache(key: string): Promise<boolean> {
  * Get TTL for a key (in seconds)
  */
 export async function getTTL(key: string): Promise<number> {
+  if (!redis) return -1;
   try {
     const ttl = await redis.ttl(key);
     return ttl;
@@ -115,6 +121,7 @@ export async function getTTL(key: string): Promise<number> {
  * Batch get multiple keys
  */
 export async function batchGetCache<T>(keys: string[]): Promise<(T | null)[]> {
+  if (!redis) return keys.map(() => null);
   try {
     if (keys.length === 0) return [];
 
@@ -137,6 +144,7 @@ export async function batchGetCache<T>(keys: string[]): Promise<(T | null)[]> {
  * Increment a counter with optional TTL
  */
 export async function incrementCounter(key: string, ttl?: number): Promise<number> {
+  if (!redis) return 0;
   try {
     const value = await redis.incr(key);
     if (ttl && value === 1) {
