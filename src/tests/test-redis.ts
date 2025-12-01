@@ -44,5 +44,7 @@ testRedis()
     console.error('[Redis Test] Encountered error:', error);
   })
   .finally(async () => {
-    await redis.quit();
+    if (redis) {
+      await redis.quit();
+    }
   });

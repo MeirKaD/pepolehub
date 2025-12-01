@@ -66,5 +66,7 @@ testSearchCache()
     console.error('[Search Cache Test] Encountered error:', error);
   })
   .finally(async () => {
-    await redis.quit();
+    if (redis) {
+      await redis.quit();
+    }
   });
