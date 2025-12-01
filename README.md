@@ -138,7 +138,8 @@ User Query → AI Parser (Gemini 2.0) → Cache Check → LinkedIn Scraper → D
 
 ### Research Workflow (LangGraph)
 
-![Research architecture](https://private-user-images.githubusercontent.com/182499612/511709203-35eb5cf6-0a3c-4d8d-8367-0e4a468cee43.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjQzMTYwOTYsIm5iZiI6MTc2NDMxNTc5NiwicGF0aCI6Ii8xODI0OTk2MTIvNTExNzA5MjAzLTM1ZWI1Y2Y2LTBhM2MtNGQ4ZC04MzY3LTBlNGE0NjhjZWU0My5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUxMTI4JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MTEyOFQwNzQzMTZaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT02MTgzOTAxNzk5NzJhN2ZiNjdhOGQ4Nzc4NWVhNjk4MWUxZGI5ODdkMzNiMzc0NGE5ZGY4ZGZjYjA2NWMyMGJkJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.8306q-mH73YKgn9XIJm7-HuazbWVPpTvpCS-dpuX8pU)
+![Research architecture](./assets/pepolehub-architecture.png)
+
 
 ## 📚 Tech Stack
 
