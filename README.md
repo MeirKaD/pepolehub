@@ -77,7 +77,7 @@ Country-specific search results with automatic geo-targeting
 1. **Clone the repository**
 ```bash
 git clone https://github.com/MeirKaD/pepolehub
-cd peoplehub
+cd pepolehub
 ```
 
 2. **Install dependencies**
@@ -235,7 +235,7 @@ Automated due diligence reports using LangChain's LangGraph framework:
 ## 🏗️ Project Structure
 
 ```
-peoplehub/
+pepolehub/
 ├── prisma/
 │   └── schema.prisma              # Database schema (Person, Search, Research models)
 ├── src/
